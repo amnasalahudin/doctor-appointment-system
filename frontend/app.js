@@ -57,5 +57,17 @@ app.get('/api/appointments', async (req, res) => {
   }
 });
 
+// Proxy POST requests to Flask server for appointments
+app.post('/api/appointments', async (req, res) => {
+  let url = process.env.APPOINTMENTS_SERVICE_URL;
+  try {
+      const response = await axios.post(`http://${url}/appointments`, req.body);
+      res.json(response.data);
+  } catch (error) {
+      console.error('Error adding appointment:', error);
+      res.status(500).json({ error: 'Could not add appointment' });
+  }
+});
+
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

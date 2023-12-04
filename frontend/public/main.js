@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const firstNameCell = document.createElement("td");
         firstNameCell.textContent = appointments.doctor;
 
+        const NameCell = document.createElement("td");
+        NameCell.textContent = appointments.name;
+
         const lastNameCell = document.createElement("td");
         lastNameCell.textContent = appointments.date;
 
@@ -70,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Append cells to the row
         row.appendChild(idCell);
         row.appendChild(firstNameCell);
+        row.appendChild(NameCell);
         row.appendChild(lastNameCell);
         row.appendChild(specialityCell);
 
@@ -138,3 +142,31 @@ document
       alert(errorResponse.error || "Failed to add doctor");
     }
   });
+
+  // Add event listener for adding appointments
+document.getElementById("add-appointment-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const newAppointment = {
+      id: document.getElementById("appointment-id").value,
+      doctor: document.getElementById("appointment-doctor-id").value,
+      date: document.getElementById("appointment-date").value,
+      rating: document.getElementById("appointment-rating").value
+  };
+
+  const response = await fetch("/api/appointments", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newAppointment),
+  });
+
+  if (response.ok) {
+      alert("Appointment added successfully");
+     window.location.reload(); // Refresh the appointments list
+  } else {
+      const errorResponse = await response.json();
+      alert(errorResponse.error || "Failed to add appointment");
+  }
+});
