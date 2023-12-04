@@ -1,0 +1,6 @@
+# Ignore .env files
+/frontend/.env
+/doctors/.env
+/appointments/.env
+
+
