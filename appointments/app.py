@@ -20,8 +20,15 @@ def getAppointments():
 
 @app.route('/appointment/<id>', methods=["GET"])
 def getAppointment(id):
-  id = int(id) - 1
-  return jsonify({"id": appointments[id].id, "doctor": appointments[id].doctor, "date": appointments[id].date, "rating": appointments[id].rating})
+    # Find the appointment by id
+    appointment = next((a for a in appointments if a['id'] == id), None)
+
+    # Check if the appointment was found
+    if appointment is not None:
+        return jsonify(appointment)
+    else:
+        return jsonify({"error": "Appointment not found"}), 404
+
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0",port=7070)

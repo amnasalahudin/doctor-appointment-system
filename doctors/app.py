@@ -17,8 +17,15 @@ def getDoctors():
 
 @app.route('/doctor/<id>', methods=["GET"])
 def getDoctor(id):
-  id = int(id) - 1
-  return jsonify({"id": doctors[id].id, "firstName": doctors[id].firstName, "lastName": doctors[id].lastName, "speciality": doctors[id].speciality})
+    # Find the doctor by id
+    doctor = next((d for d in doctors if d['id'] == id), None)
+
+    # Check if the doctor was found
+    if doctor is not None:
+        return jsonify(doctor)
+    else:
+        return jsonify({"error": "Doctor not found"}), 404
+
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0",port=9090)
