@@ -2,5 +2,6 @@
 /frontend/.env
 /doctors/.env
 /appointments/.env
+.env
 
 

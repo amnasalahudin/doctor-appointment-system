@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    image: amnasalahudin/frontend-service:latest
+    ports:
+      - "3000:3000"
+    environment:
+      DOCTORS_SERVICE_URL: "doctors:9090"
+      APPOINTMENTS_SERVICE_URL: "appointments:7070"
+    networks:
+      - application
+
+  doctors:
+    image: amnasalahudin/doctors-service:latest
+    ports:
+      - "9090:9090"
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+    networks:
+      - application
+
+  appointments:
+    image: amnasalahudin/appointments-service:latest
+    ports:
+      - "7070:7070"
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+    networks:
+      - application
+  
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - application
+
+volumes:
+  mongo-data:
+
+networks:
+  application:
