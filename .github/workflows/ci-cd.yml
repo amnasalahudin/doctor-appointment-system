@@ -56,8 +56,11 @@ jobs:
       if: steps.check_changes.outputs.changed == 'true'
       uses: docker/build-push-action@v5.1.0
       with:
+        context: ./${{ matrix.service }}
+        file: ./${{ matrix.service }}/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:${{ github.run_number }}
+
 
     - name: Update docker-compose.yaml
       if: steps.check_changes.outputs.changed == 'true'
