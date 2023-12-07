@@ -65,7 +65,7 @@ jobs:
     - name: Update docker-compose.yaml
       if: steps.check_changes.outputs.changed == 'true'
       run: |
-        sed -i 's|${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:.*|${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:6|' ../docker-compose.yaml
+        sed -i 's|${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:.*|${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:${{ github.run_number }}|' ../docker-compose.yaml
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git add ../docker-compose.yaml
