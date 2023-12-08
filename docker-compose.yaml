@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   frontend:
-    image: amnasalahudin/frontend-service:18
+    image: amnasalahudin/frontend-service:20
     ports:
       - "3000:3000"
     environment:
