@@ -23,7 +23,7 @@ services:
       - application
 
   appointments:
-    image: amnasalahudin/appointments-service:19
+    image: amnasalahudin/appointments-service:20
     ports:
       - "7070:7070"
     environment:
