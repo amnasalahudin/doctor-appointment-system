@@ -69,7 +69,7 @@ app.post('/api/appointments', async (req, res) => {
   }
 });
 
-// edit
+// edit for pr
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
