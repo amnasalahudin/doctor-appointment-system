@@ -13,7 +13,7 @@ services:
       - application
 
   doctors:
-    image: amnasalahudin/doctors-service:22
+    image: amnasalahudin/doctors-service:23
     ports:
       - "9090:9090"
     environment:
