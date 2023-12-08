@@ -73,10 +73,17 @@ jobs:
         git config --global user.email 'github-actions@github.com'
         git add ../docker-compose.yaml
         git commit -m "Update docker-compose.yaml for ${{ matrix.service }} service"
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          git fetch origin ${{ github.head_ref }}
-          git checkout ${{ github.head_ref }}
-          git push origin HEAD:${{ github.head_ref }} --force-with-lease
-        else
-          git push origin HEAD:${{ github.ref }} --force-with-lease
-        fi
+        RETRY_COUNT=0
+        MAX_RETRIES=3
+        DELAY_SECONDS=10
+        until git push origin HEAD:${{ github.head_ref || github.ref }} --force-with-lease; do
+          exit_code=$?
+          echo "Push failed, retrying in $DELAY_SECONDS seconds..."
+          sleep $DELAY_SECONDS
+          ((RETRY_COUNT=RETRY_COUNT+1))
+          if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
+            echo "Maximum retries reached, exiting with error"
+            exit $exit_code
+          fi
+          git pull origin ${{ github.head_ref || github.ref }}
+        done
