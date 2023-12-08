@@ -57,6 +57,8 @@ def addDoctor():
     doctors_collection.insert_one(new_doctor)
     return jsonify({"message": "Doctor added successfully"}), 201
 
+
+#adding health checkpoint
 @app.route('/health', methods=['GET'])
 def health_check():
     return 'OK', 200
