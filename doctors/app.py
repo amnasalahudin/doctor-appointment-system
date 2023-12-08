@@ -58,7 +58,7 @@ def addDoctor():
     return jsonify({"message": "Doctor added successfully"}), 201
 
 
-#adding health checkpoint
+
 @app.route('/health', methods=['GET'])
 def health_check():
     return 'OK', 200
