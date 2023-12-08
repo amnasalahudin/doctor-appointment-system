@@ -18,6 +18,7 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    steps:
 
     - name: Check for changes in the appointments service
       id: check_changes
