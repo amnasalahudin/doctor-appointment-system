@@ -58,16 +58,16 @@ jobs:
       if: steps.check_changes.outputs.changed == 'true'
       run: |
         sed -i 's|${{ secrets.DOCKERHUB_USERNAME }}/appointments-service:.*|${{ secrets.DOCKERHUB_USERNAME }}/appointments-service:${{ github.run_number }}|' docker-compose.yaml
-        # Check if there are changes to commit. If there are none, the script exits with status 0.
         git diff --exit-code || {
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add docker-compose.yaml
-          git commit -m "Update docker-compose.yaml for appointments service to version 5"
+          git commit -m "Update docker-compose.yaml for appointments service to version ${{ github.run_number }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # Fetch the branch related to the pull request, check it out, and push the changes.
             git fetch origin ${{ github.head_ref }}
-            git checkout -b ${{ github.head_ref }} origin/${{ github.head_ref }}
+            git checkout -b temp-branch
+            git add docker-compose.yaml
+            git commit --amend --no-edit
             git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
           else
             git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }} HEAD:main

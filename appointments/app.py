@@ -67,7 +67,7 @@ def getAppointment(id):
     else:
         return jsonify({"error": "Appointment not found"}), 404
     
-   #edit 4
+   #edit 5
 @app.route('/health', methods=['GET'])
 def health_check():
     return 'OK', 200
