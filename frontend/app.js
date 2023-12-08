@@ -70,6 +70,9 @@ app.post('/api/appointments', async (req, res) => {
 });
 
 
+// small edit on feature branch
+
+
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
