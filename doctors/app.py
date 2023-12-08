@@ -57,6 +57,10 @@ def addDoctor():
     doctors_collection.insert_one(new_doctor)
     return jsonify({"message": "Doctor added successfully"}), 201
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return 'OK', 200
+
 
 if __name__ == "__main__":
     bootstrap_doctors()
