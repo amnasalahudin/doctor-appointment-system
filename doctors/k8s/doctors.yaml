@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: doctors-secret
+type: Opaque
+data:
+  mongo-uri: bW9uZ29kYjovL21vbmdvLXNlcnZpY2U6MjcwMTc=
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: doctors-config
+data:
+  MONGO_DB_NAME: "healthcare_database"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doctors-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: doctors
+  template:
+    metadata:
+      labels:
+        app: doctors
+    spec:
+      containers:
+      - name: doctors
+        image: amnasalahudin/doctors-service:30
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: doctors-secret
+              key: mongo-uri
+        - name: MONGO_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: doctors-config
+              key: MONGO_DB_NAME
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 15
+          failureThreshold: 2
+          periodSeconds: 20
+        volumeMounts:
+        - name: details-volume
+          mountPath: /user/details.txt
+          subPath: details.txt
+      volumes:
+      - name: details-volume
+        configMap:
+          name: doctors
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: doctors-service
+spec:
+  selector:
+    app: doctors
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090

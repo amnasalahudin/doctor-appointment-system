@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: doctors
+data:
+  details.txt: |
+    Hello, my name is Amna Salahudin.
+    I am currently in last year of my bachelor studies in FAST.
