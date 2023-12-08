@@ -5,6 +5,8 @@ metadata:
 type: Opaque
 data:
   mongo-uri: bW9uZ29kYjovL21vbmdvLXNlcnZpY2U6MjcwMTc=
+  NAME: YW1uYQ==
+  PASSWORD: MTIzNDU2
 
 ---
 
@@ -54,6 +56,16 @@ spec:
             configMapKeyRef:
               name: appointment-config
               key: MONGO_DB_NAME
+        - name: NAME
+          valueFrom:
+            secretKeyRef:
+              name: appointment
+              key: NAME
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: appointment
+              key: PASSWORD
         readinessProbe:
           failureThreshold: 3
           httpGet:
