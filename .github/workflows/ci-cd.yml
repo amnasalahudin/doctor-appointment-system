@@ -61,9 +61,11 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}-service:${{ github.run_number }}
 
-    - name: Pull the latest changes from the repository
+    - name: Pull the latest changes from the repository with rebase
       if: steps.check_changes.outputs.changed == 'true'
-      run: git pull origin ${{ github.ref }}
+      run: |
+        git config pull.rebase true
+        git pull origin ${{ github.head_ref || github.ref }}
 
     - name: Update docker-compose.yaml
       if: steps.check_changes.outputs.changed == 'true'
