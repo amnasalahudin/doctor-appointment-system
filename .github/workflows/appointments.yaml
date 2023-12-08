@@ -54,7 +54,7 @@ jobs:
       if: steps.check_changes.outputs.changed == 'true'
       run: git pull origin ${{ github.ref }}
 
-     - name: Update docker-compose.yaml
+    - name: Update docker-compose.yaml
       if: steps.check_changes.outputs.changed == 'true'
       run: |
         sed -i 's|${{ secrets.DOCKERHUB_USERNAME }}/appointments-service:.*|${{ secrets.DOCKERHUB_USERNAME }}/appointments-service:${{ github.run_number }}|' docker-compose.yaml
